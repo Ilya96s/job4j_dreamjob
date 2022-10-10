@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * PostStore - хранилище
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PostStore {
     private static final PostStore INST = new PostStore();
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
+    private AtomicInteger atomicInteger = new AtomicInteger(1);
 
     private PostStore() {
         posts.put(1, new Post(1, "Junior Java Job", "Junior Developer", new Date()));
@@ -28,5 +30,11 @@ public class PostStore {
 
     public Collection<Post> findAll() {
         return posts.values();
+    }
+
+    public void add(Post post) {
+        int postId = atomicInteger.getAndIncrement();
+        post.setId(postId);
+        posts.putIfAbsent(postId, post);
     }
 }
