@@ -47,6 +47,7 @@ public class PostControl {
 
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post) {
+        post.setCreated(new Date());
         store.update(post);
         return "redirect:/posts";
     }
