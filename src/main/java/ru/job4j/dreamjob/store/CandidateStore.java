@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.store;
 
+import net.jcip.annotations.ThreadSafe;
 import ru.job4j.dreamjob.model.Candidate;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Ilya Kaltygin
  */
+@ThreadSafe
 public class CandidateStore {
     private static final CandidateStore INST = new CandidateStore();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
