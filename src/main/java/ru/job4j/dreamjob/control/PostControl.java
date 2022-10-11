@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.store.PostStore;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * PostController - контроллер
@@ -28,13 +28,13 @@ public class PostControl {
 
     @GetMapping("/formAddPost")
     public String addPost(Model model) {
-        model.addAttribute("post", new Post(0, "Заполните имя", "Заполните описание", new Date()));
+        model.addAttribute("post", new Post(0, "Заполните имя", "Заполните описание", LocalDate.now()));
         return "addPost";
     }
 
     @PostMapping("/createPost")
     public String createPost(@ModelAttribute Post post) {
-        post.setCreated(new Date());
+        post.setCreated(LocalDate.now());
         store.add(post);
         return "redirect:/posts";
     }
@@ -47,7 +47,7 @@ public class PostControl {
 
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post) {
-        post.setCreated(new Date());
+        post.setCreated(LocalDate.now());
         store.update(post);
         return "redirect:/posts";
     }
