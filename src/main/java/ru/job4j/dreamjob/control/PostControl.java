@@ -21,17 +21,17 @@ import java.time.LocalDate;
 @ThreadSafe
 @Controller
 public class PostControl {
-    private PostService store;
+    private PostService postService;
     private final CityService cityService;
 
     public PostControl(PostService postService, CityService cityService) {
-        this.store = postService;
+        this.postService = postService;
         this.cityService = cityService;
     }
 
     @GetMapping("/posts")
     public String posts(Model model) {
-        model.addAttribute("posts", store.findAll());
+        model.addAttribute("posts", postService.findAll());
         return "posts";
     }
 
@@ -46,13 +46,13 @@ public class PostControl {
     public String createPost(@ModelAttribute Post post) {
         post.setCreated(LocalDate.now());
         post.setCity(cityService.findById(post.getCity().getId()));
-        store.add(post);
+        postService.add(post);
         return "redirect:/posts";
     }
 
     @GetMapping("/formUpdatePost/{postId}")
     public String formUpdatePost(Model model, @PathVariable("postId") int id) {
-        model.addAttribute("post", store.findById(id));
+        model.addAttribute("post", postService.findById(id));
         model.addAttribute("cities", cityService.getAllCities());
         return "updatePost";
     }
@@ -60,7 +60,8 @@ public class PostControl {
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post) {
         post.setCreated(LocalDate.now());
-        store.update(post);
+        post.setCity(cityService.findById(post.getCity().getId()));
+        postService.update(post);
         return "redirect:/posts";
     }
 }
