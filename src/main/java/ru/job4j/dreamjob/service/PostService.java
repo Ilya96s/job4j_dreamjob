@@ -3,8 +3,8 @@ package ru.job4j.dreamjob.service;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Post;
-import ru.job4j.dreamjob.store.PostStore;
-import java.util.Collection;
+import ru.job4j.dreamjob.store.PostDBStore;
+import java.util.List;
 
 /**
  * PostService - класс,описывающий бизнес логику приложения
@@ -14,14 +14,22 @@ import java.util.Collection;
 @ThreadSafe
 @Service
 public class PostService {
-    private PostStore postStore;
+    private final PostDBStore postStore;
+    private final CityService cityService;
 
-    public PostService(PostStore postStore) {
+    public PostService(PostDBStore postStore, CityService cityService) {
         this.postStore = postStore;
+        this.cityService = cityService;
     }
 
-    public Collection<Post> findAll() {
-        return postStore.findAll();
+    public List<Post> findAll() {
+        List<Post> posts = postStore.findAll();
+        posts.forEach(
+                post -> post.setCity(
+                        cityService.findById(post.getCity().getId())
+                )
+        );
+        return posts;
     }
 
     public void add(Post post) {

@@ -12,6 +12,7 @@ import ru.job4j.dreamjob.service.CityService;
 import ru.job4j.dreamjob.service.PostService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * PostController - контроллер
@@ -37,14 +38,14 @@ public class PostControl {
 
     @GetMapping("/formAddPost")
     public String addPost(Model model) {
-        model.addAttribute("post", new Post(0, "Заполните имя", "Заполните описание", LocalDate.now()));
+        model.addAttribute("post", new Post(0, "Заполните имя", "Заполните описание", LocalDateTime.now()));
         model.addAttribute("cities", cityService.getAllCities());
         return "addPost";
     }
 
     @PostMapping("/createPost")
     public String createPost(@ModelAttribute Post post) {
-        post.setCreated(LocalDate.now());
+        post.setCreated(LocalDateTime.now());
         post.setCity(cityService.findById(post.getCity().getId()));
         postService.add(post);
         return "redirect:/posts";
@@ -59,7 +60,7 @@ public class PostControl {
 
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post) {
-        post.setCreated(LocalDate.now());
+        post.setCreated(LocalDateTime.now());
         post.setCity(cityService.findById(post.getCity().getId()));
         postService.update(post);
         return "redirect:/posts";
