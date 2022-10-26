@@ -3,6 +3,7 @@ package ru.job4j.dreamjob.service;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Candidate;
+import ru.job4j.dreamjob.store.CandidateDbStore;
 import ru.job4j.dreamjob.store.CandidateStore;
 
 import java.util.Collection;
@@ -15,9 +16,9 @@ import java.util.Collection;
 @ThreadSafe
 @Service
 public class CandidateService {
-    private final CandidateStore candidateStore;
+    private final CandidateDbStore candidateStore;
 
-    public CandidateService(CandidateStore candidateStore) {
+    public CandidateService(CandidateDbStore candidateStore) {
         this.candidateStore = candidateStore;
     }
 

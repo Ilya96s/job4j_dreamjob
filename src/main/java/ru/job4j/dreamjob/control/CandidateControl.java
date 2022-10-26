@@ -16,6 +16,7 @@ import ru.job4j.dreamjob.service.CityService;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * CandidateControl - контроллер
@@ -41,7 +42,7 @@ public class CandidateControl {
 
     @GetMapping("/formAddCandidate")
     public String addCandidate(Model model) {
-        model.addAttribute("candidate", new Candidate(0, "Заполните имя", "Заполните описание", LocalDate.now()));
+        model.addAttribute("candidate", new Candidate(0, "Заполните имя", "Заполните описание", LocalDateTime.now()));
         model.addAttribute("cities", cityService.getAllCities());
         return "addCandidate";
     }
@@ -49,7 +50,7 @@ public class CandidateControl {
     @PostMapping("/createCandidate")
     public String createCandidate(@ModelAttribute Candidate candidate,
                                   @RequestParam("file") MultipartFile file) throws IOException {
-        candidate.setCreated(LocalDate.now());
+        candidate.setCreated(LocalDateTime.now());
         candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidate.setPhoto(file.getBytes());
         candidateService.add(candidate);
@@ -66,7 +67,7 @@ public class CandidateControl {
     @PostMapping("/updateCandidate")
     public String updateCandidate(@ModelAttribute Candidate candidate,
                                   @RequestParam("file")MultipartFile file) throws IOException {
-        candidate.setCreated(LocalDate.now());
+        candidate.setCreated(LocalDateTime.now());
         candidate.setCity(cityService.findById(candidate.getCity().getId()));
         candidate.setPhoto(file.getBytes());
         candidateService.update(candidate);
