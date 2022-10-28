@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 public class CandidateDbStore {
     private static final Logger LOG = LoggerFactory.getLogger(CandidateDbStore.class.getName());
     private static final String FIND_ALL = "SELECT * FROM Candidate";
-    private static final String ADD_CANDIDATE = "INSERT INTO Candidate(name, visible, city_id, desc, created) VALUES(?, ?, ?, ?, ?)";
+    private static final String ADD_CANDIDATE = "INSERT INTO Candidate(name, visible, city_id, description, created) VALUES(?, ?, ?, ?, ?)";
     private static final String FIND_CANDIDATE_BY_ID = "SELECT * FROM Candidate WHERE id=?";
-    private static final String UPDATE_CANDIDATE = "UPDATE Candidate SET name = ?, visible = ?, city_id = ?, desc = ?, created = ? WHERE id = ?";
+    private static final String UPDATE_CANDIDATE = "UPDATE Candidate SET name = ?, visible = ?, city_id = ?, description = ?, created = ? WHERE id = ?";
     private final BasicDataSource pool;
 
     public CandidateDbStore(BasicDataSource pool) {
@@ -94,7 +94,7 @@ public class CandidateDbStore {
         candidate.setId(it.getInt("id"));
         candidate.setName(it.getString("name"));
         candidate.setVisible(it.getBoolean("visible"));
-        candidate.setDesc(it.getString("desc"));
+        candidate.setDesc(it.getString("description"));
         candidate.setCreated(it.getTimestamp("created").toLocalDateTime());
         candidate.setCity(new City(it.getInt("city_id"), ""));
         return candidate;
