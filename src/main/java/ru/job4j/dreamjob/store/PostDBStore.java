@@ -19,10 +19,10 @@ import org.slf4j.LoggerFactory;
 @Repository
 public class PostDBStore {
     private static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
-    private static final String FIND_ALL = "SELECT * FROM Post";
-    private static final String ADD_POST = "INSERT INTO Post(name, description, created, city_id, visible) VALUES(?, ?, ?, ?, ?)";
+    private static final String FIND_ALL = "SELECT * FROM post";
+    private static final String ADD_POST = "INSERT INTO post(name, description, created, city_id, visible) VALUES(?, ?, ?, ?, ?)";
     private static final String UPDATE_POST = "UPDATE post SET name = ?, description = ?, created = ?, city_id = ?, visible = ? WHERE id = ?";
-    private static final String FIND_POST_BY_ID = "SELECT FROM Post WHERE id=?";
+    private static final String FIND_POST_BY_ID = "SELECT * FROM post WHERE id = ?";
     private final BasicDataSource pool;
 
     public PostDBStore(BasicDataSource pool) {
@@ -52,7 +52,7 @@ public class PostDBStore {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
             ps.setTimestamp(3, Timestamp.valueOf(post.getCreated()));
-            ps.setString(4, post.getCity().getName());
+            ps.setInt(4, post.getCity().getId());
             ps.setBoolean(5, post.isVisible());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
