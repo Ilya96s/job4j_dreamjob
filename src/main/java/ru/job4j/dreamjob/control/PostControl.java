@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.control;
 
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 @ThreadSafe
 @Controller
 public class PostControl {
+    @GuardedBy("this")
     private PostService postService;
     private final CityService cityService;
 

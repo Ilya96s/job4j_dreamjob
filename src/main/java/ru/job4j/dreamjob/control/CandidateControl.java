@@ -1,5 +1,6 @@
 package ru.job4j.dreamjob.control;
 
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -26,6 +27,7 @@ import java.time.LocalDateTime;
 @ThreadSafe
 @Controller
 public class CandidateControl {
+    @GuardedBy("this")
     private final CandidateService candidateService;
     private CityService cityService;
 
