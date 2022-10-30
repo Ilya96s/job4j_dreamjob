@@ -20,7 +20,7 @@ import java.util.Optional;
 public class UserDBStore {
     private static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
     private static final String ADD_USER = "INSERT INTO users(name, email, password) VALUES(?, ?, ?)";
-    private static final String FIND_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
+    private static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ?";
     private final BasicDataSource pool;
 
     public UserDBStore(BasicDataSource pool) {
@@ -47,18 +47,18 @@ public class UserDBStore {
         return Optional.empty();
     }
 
-    public Optional<User> findByEmail(String email) {
+    public Optional<User> findUserByEmailAndPassword(String email, String password) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement(FIND_USER_BY_ID)
+             PreparedStatement ps = cn.prepareStatement(FIND_USER_BY_EMAIL_AND_PASSWORD)
         ) {
             ps.setString(1, email);
             try (ResultSet it = ps.executeQuery()) {
-                if (it.next()) {
+                if (it.next() && password.equals(it.getString("password"))) {
                     return Optional.of(createUser(it));
                 }
             }
         } catch (Exception e) {
-            LOG.error("Exception in method .findById()", e);
+            LOG.error("Exception in method .findUserByEmailAndPassword", e);
         }
         return Optional.empty();
     }
