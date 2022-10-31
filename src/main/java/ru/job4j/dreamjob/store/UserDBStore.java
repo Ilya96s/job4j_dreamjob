@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.User;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -20,7 +18,7 @@ import java.util.Optional;
 public class UserDBStore {
     private static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
     private static final String ADD_USER = "INSERT INTO users(name, email, password) VALUES(?, ?, ?)";
-    private static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ?";
+    private static final String FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = ?";
     private final BasicDataSource pool;
 
     public UserDBStore(BasicDataSource pool) {
@@ -52,13 +50,14 @@ public class UserDBStore {
              PreparedStatement ps = cn.prepareStatement(FIND_USER_BY_EMAIL_AND_PASSWORD)
         ) {
             ps.setString(1, email);
+            ps.setString(2, password);
             try (ResultSet it = ps.executeQuery()) {
-                if (it.next() && password.equals(it.getString("password"))) {
+                if (it.next()) {
                     return Optional.of(createUser(it));
                 }
             }
         } catch (Exception e) {
-            LOG.error("Exception in method .findUserByEmailAndPassword", e);
+            LOG.error("Exception in method .findUserByEmailAndPassword()", e);
         }
         return Optional.empty();
     }
