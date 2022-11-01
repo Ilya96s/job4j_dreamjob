@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.dreamjob.model.User;
 import ru.job4j.dreamjob.service.UserService;
+import ru.job4j.dreamjob.utility.HttpSessionUtility;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,12 +33,7 @@ public class UserControl {
 
     @GetMapping("/formAddUser")
     public String registration(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        model.addAttribute("user", HttpSessionUtility.checkSession(session));
         return "addUser";
     }
 
@@ -52,24 +48,14 @@ public class UserControl {
 
     @GetMapping("/success")
     public String success(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        model.addAttribute("user", HttpSessionUtility.checkSession(session));
         return "success";
     }
 
     @GetMapping("/fail")
     public String fail(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
         model.addAttribute("message", "Пользователь с такой почтой уже существует");
-        model.addAttribute("user", user);
+        model.addAttribute("user", HttpSessionUtility.checkSession(session));
         return "fail";
     }
 
