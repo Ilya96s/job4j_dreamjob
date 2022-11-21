@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Component
 public class AuthFilter implements Filter {
-    private static final Set<String> URLS = Set.of("loginPage", "login", "forAddUser", "index", "success", "fail", "registration");
+    private static final Set<String> URLS = Set.of("loginPage", "login", "formAddUser", "index", "success", "fail", "registration");
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
